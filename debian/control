@@ -1,0 +1,35 @@
+Source: nfcd
+Section: misc
+Priority: optional
+Maintainer: Bardia Moshiri <fakeshell@bardia.tech>
+XSBC-Original-Maintainer: UBports Developers <devs@ubports.com>
+Build-Depends: debhelper-compat (= 12),
+               libglib2.0-dev (>= 2.0),
+               libglibutil-dev,
+               libncicore-dev (>= 1.1.11),
+               libmagic-dev,
+               dh-systemd,
+Standards-Version: 3.8.4
+Homepage: https://github.com/sailfishos/nfcd
+Vcs-Browser: https://github.com/droidian/nfcd
+Vcs-Git: https://github.com/droidian/nfcd
+
+Package: nfcd
+Section: misc
+Architecture: any
+Depends: libncicore (>= 1.1.11), ${shlibs:Depends}, ${misc:Depends}
+Breaks: neard
+Replaces: neard
+Description: NFC daemon
+
+Package: nfcd-tools
+Section: misc
+Architecture: any
+Depends: libncicore (>= 1.1.11), nfcd, ${shlibs:Depends}, ${misc:Depends}
+Description: NFC tools
+
+Package: libnfcd-dev
+Section: libdevel
+Architecture: any
+Depends: libglibutil-dev, libncicore-dev, ${misc:Depends}
+Description: Development files for nfcd

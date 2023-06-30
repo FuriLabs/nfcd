@@ -1,0 +1,2 @@
+debian/tmp/usr/sbin/nfcd usr/sbin
+debian/tmp/etc/dbus-1/system.d/* etc/dbus-1/system.d
