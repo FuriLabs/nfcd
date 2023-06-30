@@ -1,0 +1,2 @@
+# ignore SailfishOS-specific systemd service file
+usr/lib/systemd/system/nfcd.service
