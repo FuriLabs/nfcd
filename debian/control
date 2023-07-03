@@ -7,7 +7,7 @@ Build-Depends: debhelper-compat (= 12),
                libglib2.0-dev (>= 2.0),
                libglibutil-dev,
                libncicore-dev (>= 1.1.11),
-               libmagic-dev,
+               libmagic-dev
 Standards-Version: 3.8.4
 Homepage: https://github.com/sailfishos/nfcd
 Vcs-Browser: https://github.com/droidian/nfcd

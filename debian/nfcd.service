@@ -5,7 +5,7 @@ After=lxc@android.service
 [Service]
 Type=dbus
 Environment=NFCD_NO_STOP_POLL_LOOP=1
-ExecCondition=sh -c 'command -v getprop && [ "$(getprop ro.build.version.sdk)" -ge 28 ]'
+ExecStartPre=/usr/bin/binder-wait android.hardware.nfc@1.1::INfc/default
 ExecStart=/usr/sbin/nfcd -p /usr/lib/nfcd/plugins
 BusName=org.sailfishos.nfc.daemon
 
