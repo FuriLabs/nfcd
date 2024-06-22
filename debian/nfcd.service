@@ -1,6 +1,7 @@
 [Unit]
 Description=NFC daemon
 After=lxc@android.service
+ConditionPathExists=!/home/furios/.nfc_disable
 
 [Service]
 Type=dbus
