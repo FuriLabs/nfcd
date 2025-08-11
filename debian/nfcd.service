@@ -2,7 +2,7 @@
 Description=NFC daemon
 After=lxc@android.service
 ConditionPathExists=!/home/furios/.nfc_disable
-ConditionPathIsMountPoint=!/var/lib/waydroid/rootfs
+ConditionPathIsMountPoint=!/var/lib/andromeda/rootfs
 
 [Service]
 Type=dbus
