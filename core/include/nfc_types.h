@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2023 Slava Monich <slava@monich.com>
+ * Copyright (C) 2018-2025 Slava Monich <slava@monich.com>
  * Copyright (C) 2018-2022 Jolla Ltd.
  * Copyright (C) 2020 Open Mobile Platform LLC.
  *
@@ -187,6 +187,28 @@ typedef struct nfc_apdu {
     GUtilData data;     /* Command data */
     guint le;           /* Expected length, zero if none */
 } NfcApdu; /* Since 1.2.0 */
+
+/*
+ * NFCForum-TS-DigitalProtocol-1.0 requirement:
+ * The NFCID1 of the NFC Forum device MUST have a length of 4, 7, or 10 bytes.
+ */
+typedef struct nfc_id1 {
+    guint len; /* Valid values are 4, 7, and 10 */
+    guint8 bytes[10];
+} NfcId1; /* Since 1.2.2 */
+
+/*
+ * NFCForum-TS-DigitalProtocol-1.0
+ * Requirements 142: Historical Bytes of the ATS
+ * Poll Mode:   The NFC Forum Device MUST be ready to receive an ATS
+ *              with up to 15 historical bytes.
+ * Listen Mode: The NFC Forum Device MUST send no more than 15 historical
+ *              bytes.
+ */
+typedef struct nfc_ats_hb {
+    guint len;
+    guint8 bytes[15];
+} NfcAtsHb; /* Since 1.2.4 */
 
 /*
  * Some APIs that support both synchronous and synchronous completion

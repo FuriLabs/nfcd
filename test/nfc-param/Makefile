@@ -19,14 +19,11 @@ all: debug release
 # Sources
 #
 
-NAME = ndef-read
-SRC = $(NAME).c
+SRC = nfc-param.c
 
 GEN_SRC = \
   org.sailfishos.nfc.Adapter.c \
-  org.sailfishos.nfc.Daemon.c \
-  org.sailfishos.nfc.NDEF.c \
-  org.sailfishos.nfc.Tag.c
+  org.sailfishos.nfc.Daemon.c
 
 ALL_SRC = $(GEN_SRC) $(SRC)
 
@@ -52,10 +49,10 @@ RELEASE_FLAGS =
 DEBUG_DEFS = -DDEBUG
 RELEASE_DEFS =
 WARNINGS = -Wall -Wstrict-aliasing -Wunused-result
-INCLUDES = -I. -I$(GEN_DIR)
+INCLUDES = -I. -I../../core/include -I$(GEN_DIR)
 FULL_CFLAGS = -fPIC $(CFLAGS) $(DEFINES) $(WARNINGS) $(INCLUDES) \
   -MMD -MP $(shell pkg-config --cflags $(PKGS))
-FULL_LDFLAGS = $(LDFLAGS) -pie
+FULL_LDFLAGS = $(LDFLAGS)
 
 KEEP_SYMBOLS ?= 0
 ifneq ($(KEEP_SYMBOLS),0)
@@ -101,16 +98,22 @@ $(RELEASE_OBJS): | $(RELEASE_BUILD_DIR)
 # Rules
 #
 
-EXE = $(NAME)
+EXE = nfc-param
 DEBUG_EXE = $(DEBUG_BUILD_DIR)/$(EXE)
 RELEASE_EXE = $(RELEASE_BUILD_DIR)/$(EXE)
 
-debug: $(DEBUG_DEPS) $(DEBUG_EXE)
+debug: $(DEBUG_EXE)
 
-release: $(RELEASE_DEPS) $(RELEASE_EXE)
+release: $(RELEASE_EXE)
 
 clean:
 	rm -fr $(BUILD_DIR) $(SRC_DIR)/*~
+
+nfc_core_debug_lib:
+	make -C $(NFC_CORE_DIR) debug
+
+nfc_core_release_lib:
+	make -C $(NFC_CORE_DIR) release
 
 $(GEN_DIR)/%.c: $(SPEC_DIR)/%.xml
 	gdbus-codegen --generate-c-code $(@:%.c=%) $<
@@ -136,10 +139,10 @@ $(DEBUG_BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 $(RELEASE_BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -c $(WARN) $(RELEASE_CFLAGS) -MT"$@" -MF"$(@:%.o=%.d)" $< -o $@
 
-$(DEBUG_EXE): $(DEBUG_EXE_DEPS) $(DEBUG_OBJS)
+$(DEBUG_EXE): $(DEBUG_OBJS)
 	$(LD) $(DEBUG_LDFLAGS) $(DEBUG_OBJS) $(DEBUG_LIBS) -o $@
 
-$(RELEASE_EXE): $(RELEASE_EXE_DEPS) $(RELEASE_OBJS)
+$(RELEASE_EXE): $(RELEASE_OBJS)
 	$(LD) $(RELEASE_LDFLAGS) $(RELEASE_OBJS) $(RELEASE_LIBS) -o $@
 ifeq ($(KEEP_SYMBOLS),0)
 	strip $@
