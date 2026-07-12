@@ -6,7 +6,7 @@
 # Required packages
 #
 
-PKGS = gio-unix-2.0 gio-2.0 libglibutil
+PKGS = gio-unix-2.0 glib-2.0 gio-2.0 libglibutil
 LIB_PKGS = $(PKGS)
 
 #
@@ -19,13 +19,12 @@ all: debug release
 # Sources
 #
 
-NAME = ndef-read
+NAME = nfc-io
 SRC = $(NAME).c
 
 GEN_SRC = \
   org.sailfishos.nfc.Adapter.c \
   org.sailfishos.nfc.Daemon.c \
-  org.sailfishos.nfc.NDEF.c \
   org.sailfishos.nfc.Tag.c
 
 ALL_SRC = $(GEN_SRC) $(SRC)
@@ -37,6 +36,7 @@ ALL_SRC = $(GEN_SRC) $(SRC)
 SRC_DIR = .
 BUILD_DIR = build
 SPEC_DIR = ../../plugins/dbus_service
+CORE_DIR = ../../core
 GEN_DIR = $(BUILD_DIR)
 DEBUG_BUILD_DIR = $(BUILD_DIR)/debug
 RELEASE_BUILD_DIR = $(BUILD_DIR)/release
@@ -52,7 +52,7 @@ RELEASE_FLAGS =
 DEBUG_DEFS = -DDEBUG
 RELEASE_DEFS =
 WARNINGS = -Wall -Wstrict-aliasing -Wunused-result
-INCLUDES = -I. -I$(GEN_DIR)
+INCLUDES = -I. -I$(CORE_DIR)/include -I$(GEN_DIR)
 FULL_CFLAGS = -fPIC $(CFLAGS) $(DEFINES) $(WARNINGS) $(INCLUDES) \
   -MMD -MP $(shell pkg-config --cflags $(PKGS))
 FULL_LDFLAGS = $(LDFLAGS) -pie
@@ -68,7 +68,7 @@ RELEASE_CFLAGS = $(RELEASE_FLAGS) -O2 $(FULL_CFLAGS)
 DEBUG_LDFLAGS = $(DEBUG_FLAGS) $(FULL_LDFLAGS)
 RELEASE_LDFLAGS = $(RELEASE_FLAGS) $(FULL_LDFLAGS)
 
-LIBS = $(shell pkg-config --libs $(LIB_PKGS)) -ldl
+LIBS = $(shell pkg-config --libs $(LIB_PKGS)) -lmagic -ldl
 DEBUG_LIBS = $(LIBS)
 RELEASE_LIBS = $(LIBS)
 
